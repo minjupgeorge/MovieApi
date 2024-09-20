@@ -1,5 +1,7 @@
+import FindMovie from "../utils/FindMovie.js";
+
 // Sample data
-const movies = [
+let movies = [
     { id: 1, name: "Inception", genre: "Sci-Fi", year: 2010 },
     { id: 2, name: "The Godfather", genre: "Crime", year: 1972 },
     { id: 3, name: "The Dark Knight", genre: "Action", year: 2008 },
@@ -9,60 +11,63 @@ const movies = [
 
 const movieControllers ={
     getMovies: (req,res) =>{ res.json(movies);},
-    // getCatById: (req,res) =>{const cat = cats.find(c => c.id === parseInt(req.params.id));
-    //     if (cat) {
-    //       res.json(cat);
-    //     } else {
-    //       res.status(404).send('Cat not found');
-    //     }
-    // },
-    // addCat: (req,res) => {
-    //   const{name,age} = req.body;
-    //   if(!name || !age)
-    //     res.status(404).send('Please give name and id');
-    //   else
-    //   {
-    //   const newCat = { id: cats.length + 1, name, age};
-    //   cats.push(newCat);
-    //   res.status(201).json(newCat);
-    //  }
-    // },
-    // updateCat: (req,res)=>{
-    //     const {id}=req.params;
+   
+    getMoviesById: (req,res) =>{
+        const id=req.params.id;
+        const movie = FindMovie(movies,parseInt(id));
+        if (movie) {
+          res.json(movie);
+        } else {
+          res.status(404).send('Cat not found');
+        }
+    },
+    addMovie: (req,res) => {
+      const{name,genre,year} = req.body;
+      if(!name || !genre || !year)
+        res.status(404).send('Please give name,genre and year');
+      else
+      {
+      const newMovie = { id: movies.length + 1, name, genre,year};
+      movies.push(newMovie);
+      res.status(201).json(newMovie);
+     }
+    },
+    updateMovie: (req,res)=>{
+        const {id}=req.params;
+        const{name,genre,year} = req.body;
+        const movieExist = FindMovie(movies,parseInt(id));
+        if(movieExist)
+        {
+        if( name && genre && year)
+        {
+          movieExist.name = name;
+          movieExist.genre = genre;
+          movieExist.year = year;
+          res.status(200).json(movieExist);
+          }
+          else {
+            res.status(400).send('Please give name ,genre and year');
+          }
+        }
+        else
         
-    //     const{name,age} = req.body;
-    //     const catExist = cats.find((cat)=>cat.id === parseInt(id));
-    //    // console.log('Found Cat:', catExist);
-    //     if(catExist)
-    //     {
-    //     if( name && age)
-    //     {
-    //       catExist.name = name;
-    //       catExist.age = age;
-    //       res.status(200).json(catExist);
-    //       }
-    //       else {
-    //         res.status(400).send('Please give name and id');
-    //       }
-    //     }
-    //     else
-        
-    //     res.status(404).send('Cat not found');
-    //   },
+        res.status(404).send('Movie not found');
+      },
 
-    //   deleteCat: (req,res) => {
+      deleteMovie: (req,res) => {
        
-    //     const id = parseInt(req.params.id); // Convert id to number
-    //     const initialLength = cats.length;
-    //     cats = cats.filter((cat) => cat.id !== id);
+        const id = parseInt(req.params.id); // Convert id to number
+        const initialLength = movies.length;
+        console.log("movielength",initialLength);
+        movies =  movies.filter((mov) => mov.id !== id);
 
-    //     if (cats.length < initialLength) {
-    //         return res.status(200).send('Cat deleted successfully');
-    //     } else {
-    //         return res.status(404).send('Cat not found');
-    //     }       
+        if (movies.length < initialLength) {
+            return res.status(200).send('Movie deleted successfully');
+        } else {
+            return res.status(404).send('Movie not found');
+        }       
       
-    // }
+    }
 
   }
 export default movieControllers;

@@ -6,10 +6,10 @@ const movieRoutes = express.Router();
 
 // routes
 
-movieRoutes.get('/',movieControllers.getCats);
-// router.get('/:id',movieControllers.getCatById);
-// router.post('/',movieControllers.addCat);
-// router.put('/:id',movieControllers.updateCat);
-// router.delete('/:id',movieControllers.deleteCat);
+movieRoutes.get('/',movieControllers.getMovies);
+movieRoutes.get('/:id',movieControllers.getMoviesById);
+movieRoutes.post('/',movieControllers.addMovie);
+movieRoutes.put('/:id',movieControllers.updateMovie);
+movieRoutes.delete('/:id',movieControllers.deleteMovie);
 
 export default movieRoutes;
