@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 
+//import routes
+import movieRoutes from './routes/Movie.js';
 
 
 
@@ -19,7 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // use routes
 
-
+// use routes
+app.use('/', movieRoutes);
 // error
 app.use((err, req, res, next) => {
     console.error(err);
